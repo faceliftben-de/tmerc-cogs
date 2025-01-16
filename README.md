@@ -11,7 +11,7 @@ new to v3 as well.
 First, [set up Red][red-repo-install], if you haven't already. Then, you can add this repository to your bot by running
 this command in Discord:
 ```
-[p]repo add tmerc-cogs https://github.com/tmercswims/tmerc-cogs
+[p]repo add tmerc-cogs https://github.com/faceliftben-de/tmerc-cogs
 ```
 (With `[p]` being your bot's prefix.)
 
@@ -65,14 +65,7 @@ to [Médecins Sans Frontières (Doctors Without Borders)][msf] for me.
 - [Red Cog Support Server][red-support-discord]
 - [Cog Board][red-board]
 
-[tmerc-build-status]: https://github.com/tmercswims/tmerc-cogs/actions
-[tmerc-support-discord]: https://discord.gg/HWfwYxN
-[tmerc-issue-bug]: https://github.com/tmercswims/tmerc-cogs/issues/new?assignees=&labels=type%3A+bug&template=bug-report.md&title=
-[tmerc-issue-feature]: https://github.com/tmercswims/tmerc-cogs/issues/new?assignees=&labels=type%3A+enhancement&template=cog-enhancement.md&title=
-[tmerc-pulls]: https://github.com/tmercswims/tmerc-cogs/pulls
-[tmerc-issues]: https://github.com/tmercswims/tmerc-cogs/issues
-[tmerc-contributing]: .github/CONTRIBUTING.md
-[tmerc-coc]: .github/CODE_OF_CONDUCT.md
+
 
 [discord]: https://discordapp.com/
 [msf]: https://www.msf.org/
