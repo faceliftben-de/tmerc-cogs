@@ -21,13 +21,13 @@ DISABLED = "disabled"
 
 
 class Welcome(commands.Cog):
-    """Announce when users join or leave a server."""
+    """Ankündigung wenn ein Nutzer joint, verlasst, gebannt oder entbannt wird."""
 
-    default_join = "Welcome {member.mention} to {server.name}!"
-    default_leave = "{member.name} has left {server.name}!"
-    default_ban = "{member.name} has been banned from {server.name}!"
-    default_unban = "{member.name} has been unbanned from {server.name}!"
-    default_whisper = "Hey there {member.name}, welcome to {server.name}!"
+    default_join = "Willkommen {member.mention} auf {server.name}!"
+    default_leave = "{member.name} hat {server.name} verlassen!"
+    default_ban = "{member.name} wurde von {server.name} gesperrt!"
+    default_unban = "{member.name} wurde für {server.name} freigegeben!"
+    default_whisper = "Willkommeb {member.name}, zu {server.name}. Wir freuen uns dass du da bist :)"
 
     guild_defaults = {
         "enabled": False,
@@ -79,7 +79,7 @@ class Welcome(commands.Cog):
     @commands.guild_only()
     @checks.admin_or_permissions(manage_guild=True)
     async def welcome(self, ctx: commands.Context) -> None:
-        """Get current Welcome settings."""
+        """Aktuelle Einstellungen."""
 
         await ctx.typing()
 
@@ -102,85 +102,85 @@ class Welcome(commands.Cog):
             whisper_message = jw["message"] if len(jw["message"]) <= 50 else jw["message"][:50] + "..."
 
             if await ctx.embed_requested():
-                emb = discord.Embed(color=await ctx.embed_color(), title="Current Welcome Settings")
+                emb = discord.Embed(color=await ctx.embed_color(), title="Aktuelle Einstellungen")
                 emb.add_field(
                     name="General",
                     inline=False,
-                    value=f"**Enabled:** {c['enabled']}\n**Channel:** {channel.mention}\n",
+                    value=f"**Aktiv:** {c['enabled']}\n**Kanal:** {channel.mention}\n",
                 )
                 emb.add_field(
                     name="Join",
                     inline=False,
                     value=(
-                        f"**Enabled:** {j['enabled']}\n"
-                        f"**Channel:** {join_channel.mention}\n"
-                        f"**Delete previous:** {j['delete']}\n"
-                        f"**Whisper state:** {jw['state']}\n"
-                        f"**Whisper message:** {whisper_message}\n"
-                        f"**Messages:** {len(j['messages'])}; do `{ctx.prefix}welcomeset join msg list` for a list\n"
-                        f"**Bot message:** {j['bot']}"
+                        f"**Aktiv:** {j['enabled']}\n"
+                        f"**Kanal:** {join_channel.mention}\n"
+                        f"**Vorherige Löschen:** {j['delete']}\n"
+                        f"**Flüster Status:** {jw['state']}\n"
+                        f"**Flüster Nachricht:** {whisper_message}\n"
+                        f"**Nachrichten:** {len(j['messages'])}; zu `{ctx.prefix}welcomeset join msg list` for a list\n"
+                        f"**Bot Nachricht:** {j['bot']}"
                     ),
                 )
                 emb.add_field(
                     name="Leave",
                     inline=False,
                     value=(
-                        f"**Enabled:** {v['enabled']}\n"
-                        f"**Channel:** {leave_channel.mention}\n"
-                        f"**Delete previous:** {v['delete']}\n"
-                        f"**Messages:** {len(v['messages'])}; do `{ctx.prefix}welcomeset leave msg list` for a list\n"
+                        f"**Aktiv:** {v['enabled']}\n"
+                        f"**Kanal:** {leave_channel.mention}\n"
+                        f"**Vorherige Löschen:** {v['delete']}\n"
+                        f"**Nachrichten:** {len(v['messages'])}; zu `{ctx.prefix}welcomeset leave msg list` for a list\n"
                     ),
                 )
                 emb.add_field(
                     name="Ban",
                     inline=False,
                     value=(
-                        f"**Enabled:** {b['enabled']}\n"
-                        f"**Channel:** {ban_channel.mention}\n"
-                        f"**Delete previous:** {b['delete']}\n"
-                        f"**Messages:** {len(b['messages'])}; do `{ctx.prefix}welcomeset ban msg list` for a list\n"
+                        f"**Aktiv:** {b['enabled']}\n"
+                        f"**Kanak:** {ban_channel.mention}\n"
+                        f"**Vorherige Löschen:** {b['delete']}\n"
+                        f"**Nachrichten:** {len(b['messages'])}; zu `{ctx.prefix}welcomeset ban msg list` for a list\n"
                     ),
                 )
                 emb.add_field(
                     name="Unban",
                     inline=False,
                     value=(
-                        f"**Enabled:** {u['enabled']}\n"
-                        f"**Channel:** {unban_channel.mention}\n"
-                        f"**Delete previous:** {u['delete']}\n"
-                        f"**Messages:** {len(u['messages'])}; do `{ctx.prefix}welcomeset unban msg list` for a list\n"
+                        f"**Aktiv:** {u['enabled']}\n"
+                        f"**Kanal:** {unban_channel.mention}\n"
+                        f"**Vorherige Löschen:** {u['delete']}\n"
+                        f"**Nachrichten:** {len(u['messages'])}; zu `{ctx.prefix}welcomeset unban msg list` for a list\n"
                     ),
                 )
 
                 await ctx.send(embed=emb)
             else:
                 msg = box(
-                    f"  Enabled: {c['enabled']}\n"
-                    f"  Channel: {channel}\n"
+                    f"  Aktiv: {c['enabled']}\n"
+                    f"  Kanal: {channel}\n"
                     f"  Join:\n"
-                    f"    Enabled: {j['enabled']}\n"
-                    f"    Channel: {join_channel}\n"
-                    f"    Delete previous: {j['delete']}\n"
-                    f"    Whisper:\n"
-                    f"      State: {jw['state']}\n"
-                    f"      Message: {whisper_message}\n"
-                    f"    Messages: {len(j['messages'])}; do '{ctx.prefix}welcomeset join msg list' for a list\n"
+                    f"    Aktiv: {j['enabled']}\n"
+                    f"    Kanal: {join_channel}\n"
+                    f"    Vorherige Löschen: {j['delete']}\n"
+                    f"    Flüstern:\n"
+                    f"      Status: {jw['state']}\n"
+                    f"      Nachricht: {whisper_message}\n"
+                    f"    Nachrichten: {len(j['messages'])}; zu '{ctx.prefix}welcomeset join msg list' for a list\n"
                     f"    Bot message: {j['bot']}\n"
                     f"  Leave:\n"
-                    f"    Enabled: {v['enabled']}\n"
-                    f"    Channel: {leave_channel}\n"
-                    f"    Delete previous: {v['delete']}\n"
-                    f"    Messages: {len(v['messages'])}; do '{ctx.prefix}welcomeset leave msg list' for a list\n"
+                    f"    Aktiv: {v['enabled']}\n"
+                    f"    Kanal: {leave_channel}\n"
+                    f"    Vorherige Löschen: {v['delete']}\n"
+                    f"    Nachrichten: {len(v['messages'])}; zu '{ctx.prefix}welcomeset leave msg list' for a list\n"
                     f"  Ban:\n"
-                    f"    Enabled: {b['enabled']}\n"
-                    f"    Channel: {ban_channel}\n"
-                    f"    Delete previous: {b['delete']}\n"
-                    f"    Messages: {len(b['messages'])}; do '{ctx.prefix}welcomeset ban msg list' for a list\n"
+                    f"    Aktiv: {b['enabled']}\n"
+                    f"    Kanal: {ban_channel}\n"
+                    f"    Vorherige Löschen: {b['delete']}\n"
+                    f"    Nachrichten: {len(b['messages'])}; zu '{ctx.prefix}welcomeset ban msg list' for a list\n"
                     f"  Unban:\n"
-                    f"    Enabled: {u['enabled']}\n"
-                    f"    Channel: {unban_channel}\n"
-                    f"    Delete previous: {u['delete']}\n"
-                    f"    Messages: {len(u['messages'])}; do '{ctx.prefix}welcomeset unban msg list' for a list\n",
+                    f"    Aktiv: {u['enabled']}\n"
+                    f"    Kanal: {unban_channel}\n"
+                    f"    Vorherige Löschen: {u['delete']}\n"
+                    f"    Nachrichten: {len(u['messages'])}; zu '{ctx.prefix}welcomeset unban msg list' for a list\n",
                     "Current Welcome Settings",
                 )
 
@@ -188,7 +188,7 @@ class Welcome(commands.Cog):
 
     @welcome.command(name="toggle")
     async def welcome_toggle(self, ctx: commands.Context, on_off: bool = None) -> None:
-        """Turns Welcome on or off.
+        """Aktivere/Deaktiviere Welcome.
 
         If `on_off` is not provided, the state will be flipped.
         """
@@ -198,33 +198,33 @@ class Welcome(commands.Cog):
 
         await self.config.guild(guild).enabled.set(target_state)
 
-        await ctx.send(f"Welcome is now {ENABLED if target_state else DISABLED}.")
+        await ctx.send(f"Willkommen istn un {ENABLED if target_state else DISABLED}.")
 
     @welcome.command(name="channel")
     async def welcome_channel(self, ctx: commands.Context, channel: discord.TextChannel) -> None:
-        """Sets the channel to be used for event notices."""
+        """Setze den Kanal wo es gesendet werden soll."""
 
         if not Welcome.__can_speak_in(channel):
             await ctx.send(
-                f"I do not have permission to send messages in {channel.mention}. "
-                "Check your permission settings and try again."
+                f"Ich habe keine Berechtigung um in {channel.mention} Nachrichten zu versenden. "
+                "Bitte überprüfe die Berechtiungen, und versuche es erneut."
             )
             return
 
         guild = ctx.guild
         await self.config.guild(guild).channel.set(channel.id)
 
-        await ctx.send(f"I will now send event notices to {channel.mention}.")
+        await ctx.send(f"Ich werde nun alle Events in {channel.mention} senden.")
 
     @welcome.group(name="join")
     async def welcome_join(self, ctx: commands.Context) -> None:
-        """Change settings for join notices."""
+        """Einstellungen für Join ändern."""
 
         pass
 
     @welcome_join.command(name="toggle")
     async def welcome_join_toggle(self, ctx: commands.Context, on_off: bool = None) -> None:
-        """Turns join notices on or off.
+        """Aktivere/Deaktiviere Welcome.
 
         If `on_off` is not provided, the state will be flipped.
         """
@@ -233,7 +233,7 @@ class Welcome(commands.Cog):
 
     @welcome_join.command(name="channel")
     async def welcome_join_channel(self, ctx: commands.Context, channel: discord.TextChannel = None) -> None:
-        """Sets the channel to be used specifically for join notices.
+        """Lege den Join Kanal fest.
 
         If `channel` is not provided, the join-specific channel is cleared.
         """
@@ -242,7 +242,7 @@ class Welcome(commands.Cog):
 
     @welcome_join.command(name="toggledelete")
     async def welcome_join_toggledelete(self, ctx: commands.Context, on_off: bool = None) -> None:
-        """Turns deletion of previous join notice on or off.
+        """Aktivere/Deaktviere vorherigen Beitrittsbenachrichtigungen.
 
         If `on_off` is not provided, the state will be flipped.
         """
@@ -251,19 +251,19 @@ class Welcome(commands.Cog):
 
     @welcome_join.group(name="whisper")
     async def welcome_join_whisper(self, ctx: commands.Context) -> None:
-        """Change settings for join whispers."""
+        """Einstellungen Flüster-Nachrichten."""
 
         pass
 
     @welcome_join_whisper.command(name="type")
     async def welcome_join_whisper_type(self, ctx: commands.Context, choice: WhisperType) -> None:
-        """Set if a DM is sent to the new member.
+        """Aktivere/Deaktivere DM Nachricht.
 
         Options:
-          off - no DM is sent
-          only - only send a DM to the member, do not send a message to the channel
-          both - send a DM to the member and a message to the channel
-          fall - send a DM to the member, if it fails send the whisper message to the channel instead
+          off - Nicht in die DM senden
+          only - NUR DM - Keine Nachricht in den Kanal
+          both - Sende in die DM'S und in den Kanal
+          fall - Sende eine DM falls dies nicht nicht funktioniert sende eine Flüster-Nachricht in den Kanal.
         """
 
         guild = ctx.guild
@@ -273,97 +273,96 @@ class Welcome(commands.Cog):
         await self.config.guild(guild).join.whisper.state.set(whisper_type)
 
         if choice == WhisperType.OFF:
-            await ctx.send(f"I will no longer DM new members, and will send a notice to {channel.mention}.")
+            await ctx.send(f"Ich werde neue Nutzer nicht mehr per DM begrüßen. Neue Begrüßungen erscheinen und in {channel.mention}.")
         elif choice == WhisperType.ONLY:
-            await ctx.send(f"I will now only DM new members, and will not send a notice to {channel.mention}.")
+            await ctx.send(f"Ich werde neue Nutzer per DM begrüßen. Neue Begrüßungen erscheinen nicht in {channel.mention}.")
         elif choice == WhisperType.BOTH:
-            await ctx.send(f"I will now send a DM to new members, as well as send a notice to {channel.mention}.")
+            await ctx.send(f"Ich werde neue Nutzer per DM begrüßen, und eine Nachricht in {channel.mention} senden.")
         elif choice == WhisperType.FALLBACK:
             await ctx.send(
-                f"I will now send a DM to new members, and if that fails I will send the message to {channel.mention}."
+                f"Ich werde versuchen neue Nutzer pe DM zubegrüßen, sollte dies fehlschlagen per Flüsternachricht in {channel.mention}."
             )
 
     @welcome_join_whisper.command(name="message", aliases=["msg"])
     async def welcome_join_whisper_message(self, ctx: commands.Context, *, msg_format: str) -> None:
-        """Set the message DM'd to new members when they join.
+        """Setze die Nachricht.
 
-        Allows for the following customizations:
-          `{member}` is the member who joined
-          `{server}` is the server
+        Ermöglicht die folgenden Anpassungen:
+          `{member}` der Nutzer 
+          `{server}` der Server
         """
 
         await self.config.guild(ctx.guild).join.whisper.message.set(msg_format)
 
-        await ctx.send("I will now use that message format when whispering new members, if whisper is enabled.")
+        await ctx.send("Ich werde jetzt dieses Nachrichtenformat verwenden, wenn ich neuen Mitgliedern etwas zuflüstern möchte, sofern das Flüstern aktiviert ist.")
 
     @welcome_join.group(name="message", aliases=["msg"])
     async def welcome_join_message(self, ctx: commands.Context) -> None:
-        """Manage join message formats."""
+        """Verwalte das Nachrichtenformat."""
 
         pass
 
     @welcome_join_message.command(name="add")
     async def welcome_join_message_add(self, ctx: commands.Context, *, msg_format: str) -> None:
-        """Add a new join message format to be chosen.
+        """Füge ein neues Format hinzu.
 
         Allows for the following customizations:
-          `{member}` is the new member
-          `{server}` is the server
-          `{count}` is the number of members who have joined today
-          `{plural}` is an 's' if `count` is not 1, and nothing if it is
-          `{roles}` is a list of all the roles that the member has at the time
+          `{member}` der Nutzer
+          `{server}` der Server
+          `{count}` die Anzahl der Nutzer jetzt
+          `{roles}` Fügt hinzu, welche Rollen der Nutzer besitzt
 
-        For example:
-          {member.mention}... What are you doing here???
-          {server.name} has a new member! {member.name}#{member.discriminator} - {member.id}
-          Someone new has joined! Who is it?! D: IS HE HERE TO HURT US?!
+        Zum Bespiel:
+          {member.mention}... Wer bist denn du???
+          {server.name} hat nun einen Neuen Nutzer! {member.name}#{member.discriminator} - {member.id}
+          emand Neues ist beigetreten! Wer ist es?! D: IST ER HIER, UM UNS ZU VERLETZEN?!
         """
 
         await self.__message_add(ctx, msg_format, "join")
 
     @welcome_join_message.command(name="delete", aliases=["del"])
     async def welcome_join_message_delete(self, ctx: commands.Context) -> None:
-        """Delete an existing join message format from the list."""
+        """Lösche bereits aktive Formate."""
 
         await self.__message_delete(ctx, "join")
 
     @welcome_join_message.command(name="list", aliases=["ls"])
     async def welcome_join_message_list(self, ctx: commands.Context) -> None:
-        """Lists the available join message formats."""
+        """Liste aller Formate."""
 
         await self.__message_list(ctx, "join")
 
     @welcome_join.command(name="botmessage", aliases=["botmsg"])
     async def welcome_join_botmessage(self, ctx: commands.Context, *, msg_format: str = None) -> None:
-        """Sets the message format to use for join notices for bots.
+        """Setze Nachrichten für Bot-Welcomes.
 
-        Supply no format to use normal join message formats for bots.
-        Allows for the following customizations:
-          `{bot}` is the bot
-          `{server}` is the server
-          `{count}` is the number of members who have joined today
-          `{plural}` is an 's' if `count` is not 1, and nothing if it is
+        Dieses Format ist nur für Bots! Nicht für Nutzer!.
+        Erlaubte Anpassungen:
+          `{bot}` der Bot
+          `{server}` der Server
+          `{count}` die Anzahl der Nutzer jetzt
+          
 
-        For example:
-          {bot.mention} beep boop.
+        Zum Beispielt:
+          {bot.mention} huch. Ein neuer Außerirdischer 👽. Hoffentlich ist er kein Virus!
         """
 
         await self.config.guild(ctx.guild).join.bot.set(msg_format)
 
         if msg_format is not None:
-            await ctx.send("Bot join message format set. I will now greet bots with that message.")
+            await ctx.send("Bot-Welcome ist aktiv. Ich werde die neuen Robots nun immer herzlich willkommen heißen :) .")
         else:
-            await ctx.send("Bot join message format removed. I will now greet bots like normal members.")
+            await ctx.send("Bot-Welcome ist deaktiviert. Ich werde die neuen Robots nun nicht mehr willkommen heißen :( .")
 
     @welcome.group(name="leave")
     async def welcome_leave(self, ctx: commands.Context) -> None:
-        """Change settings for leave notices."""
+        """Ändere Einstellungen Leave."""
 
         pass
 
     @welcome_leave.command(name="toggle")
     async def welcome_leave_toggle(self, ctx: commands.Context, on_off: bool = None) -> None:
-        """Turns leave notices on or off.
+        """Aktivere/Deaktivere Leave.
 
         If `on_off` is not provided, the state will be flipped.
         """
@@ -372,113 +371,111 @@ class Welcome(commands.Cog):
 
     @welcome_leave.command(name="channel")
     async def welcome_leave_channel(self, ctx: commands.Context, channel: discord.TextChannel = None) -> None:
-        """Sets the channel to be used specifically for leave notices.
+        """Setze den Kanal für Leave-Nachrichten.
 
-        If `channel` is not provided, the leave-specific channel is cleared.
+        
         """
 
         await self.__set_channel(ctx, channel, "leave")
 
     @welcome_leave.command(name="toggledelete")
     async def welcome_leave_toggledelete(self, ctx: commands.Context, on_off: bool = None) -> None:
-        """Turns deletion of previous leave notice on or off.
+        """Aktivere/Deaktivere das löschen Vorherige Nachrichten.
 
-        If `on_off` is not provided, the state will be flipped.
+        
         """
 
         await self.__toggledelete(ctx, on_off, "leave")
 
     @welcome_leave.group(name="message", aliases=["msg"])
     async def welcome_leave_message(self, ctx: commands.Context) -> None:
-        """Manage leave message formats."""
+        """Verwalte das Format."""
 
         pass
 
     @welcome_leave_message.command(name="add")
     async def welcome_leave_message_add(self, ctx: commands.Context, *, msg_format: str) -> None:
-        """Add a new leave message format to be chosen.
+        """Füge ein neues Format hinzu.
 
-        Allows for the following customizations:
-          `{member}` is the member who left
-          `{server}` is the server
-          `{count}` is the number of members who have left today
-          `{plural}` is an 's' if `count` is not 1, and nothing if it is
-          `{roles}` is a list of all the roles that the member has at the time
+        Folgende Anpassungen sind möglich:
+          `{member}` der Nutzer
+          `{server}` der Server
+          `{count}` die Anzahl jetzt
+          `{roles}` eine Liste der Rollen die der Nutzer hatte
 
-        For example:
-          {member.name}... Why did you leave???
-          {server.name} has lost a member! {member.name}#{member.discriminator} - {member.id}
-          Someone has left... Aww... Bye :(
+        Beispielt:
+          {member.name}... Wieso hat er verlassen???
+          {server.name} wir haben einen Nutzer verloren! {member.name}#{member.discriminator} - {member.id}
+          Ein etwas hat uns verlassen ... Aww... Bye Bye :(
         """
 
         await self.__message_add(ctx, msg_format, "leave")
 
     @welcome_leave_message.command(name="delete", aliases=["del"])
     async def welcome_leave_message_delete(self, ctx: commands.Context) -> None:
-        """Delete an existing leave message format from the list."""
+        """Lösche aktive Formate."""
 
         await self.__message_delete(ctx, "leave")
 
     @welcome_leave_message.command(name="list", aliases=["ls"])
     async def welcome_leave_message_list(self, ctx: commands.Context) -> None:
-        """Lists the available leave message formats."""
+        """Aktive Formate sehen."""
 
         await self.__message_list(ctx, "leave")
 
     @welcome.group(name="ban")
     async def welcome_ban(self, ctx: commands.Context) -> None:
-        """Change settings for ban notices."""
+        """Verwalte Einstellungen Sperren."""
 
         pass
 
     @welcome_ban.command(name="toggle")
     async def welcome_ban_toggle(self, ctx: commands.Context, on_off: bool = None) -> None:
-        """Turns ban notices on or off.
+        """Aktivere/Deaktivere Sperren.
 
-        If `on_off` is not provided, the state will be flipped.
+        
         """
 
         await self.__toggle(ctx, on_off, "ban")
 
     @welcome_ban.command(name="channel")
     async def welcome_ban_channel(self, ctx: commands.Context, channel: discord.TextChannel = None) -> None:
-        """Sets the channel to be used specifically for ban notices.
+        """Setze den Kanal
 
-        If `channel` is not provided, the ban-specific channel is cleared.
+        
         """
 
         await self.__set_channel(ctx, channel, "ban")
 
     @welcome_ban.command(name="toggledelete")
     async def welcome_ban_toggledelete(self, ctx: commands.Context, on_off: bool = None) -> None:
-        """Turns deletion of previous ban notice on or off.
+        """Aktivere/Deaktivere das löschen Vorherige Nachrichten.
 
-        If `on_off` is not provided, the state will be flipped.
+       
         """
 
         await self.__toggledelete(ctx, on_off, "ban")
 
     @welcome_ban.group(name="message", aliases=["msg"])
     async def welcome_ban_message(self, ctx: commands.Context) -> None:
-        """Manage ban message formats."""
+        """Verwalte Sperren Format"""
 
         pass
 
     @welcome_ban_message.command(name="add")
     async def welcome_ban_message_add(self, ctx: commands.Context, *, msg_format: str) -> None:
-        """Add a new ban message format to be chosen.
+        """Füge ein neues Format hinzu.
 
-        Allows for the following customizations:
-          `{member}` is the banned member
-          `{server}` is the server
-          `{count}` is the number of members who have been banned today
-          `{plural}` is an 's' if `count` is not 1, and nothing if it is
-          `{roles}` is a list of all the roles that the member has at the time
+        Folgende Anpassungen sind möglich...
+          `{member}` der Nutzer
+          `{server}` der Server
+          `{count}` die Anzahl der gesperrten Nutzer
+          `{roles}` eine Liste der Rollen die der Nutzer hatte
 
-        For example:
-          {member.name} was banned... What did you do???
-          A member of {server.name} has been banned! {member.name}#{member.discriminator} - {member.id}
-          Someone has been banned. Good riddance!
+        Beispiel:
+          {member.name} wurde ausgesperrt... Was ist mit ihm???
+          Ein Nutzer von {server.name} wurde ausgesperrt! {member.name}#{member.discriminator} - {member.id}
+          Er wurde vom Server verbannt.
         """
 
         await self.__message_add(ctx, msg_format, "ban")
